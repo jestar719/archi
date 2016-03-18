@@ -28,6 +28,10 @@ public class ArchiApplication extends Application {
         this.githubService = githubService;
     }
 
+    /**
+     * 默认的线程(IO线程)
+     * @return Scheduler.io
+     */
     public Scheduler defaultSubscribeScheduler() {
         if (defaultSubscribeScheduler == null) {
             defaultSubscribeScheduler = Schedulers.io();

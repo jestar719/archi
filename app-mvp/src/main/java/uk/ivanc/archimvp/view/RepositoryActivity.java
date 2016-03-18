@@ -33,7 +33,7 @@ public class RepositoryActivity extends AppCompatActivity implements RepositoryM
     private View ownerLayout;
 
     private RepositoryPresenter presenter;
-
+    //获取跳转至此页面的intent
     public static Intent newIntent(Context context, Repository repository) {
         Intent intent = new Intent(context, RepositoryActivity.class);
         intent.putExtra(EXTRA_REPOSITORY, repository);
@@ -60,10 +60,11 @@ public class RepositoryActivity extends AppCompatActivity implements RepositoryM
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        //设置toolbar左侧显示箭头,并可点击
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        //从intent中获取传递来的代码库.后台加载其所有人的数据
         Repository repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         bindRepositoryData(repository);
         presenter.loadOwner(repository.owner.url);
@@ -90,6 +91,10 @@ public class RepositoryActivity extends AppCompatActivity implements RepositoryM
         ownerLayout.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * 显示代码库相应的数据.根据图像的url加载并显示图片
+     * @param repository githup代码库
+     */
     private void bindRepositoryData(final Repository repository) {
         setTitle(repository.name);
         descriptionText.setText(repository.description);

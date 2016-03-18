@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Set up presenter
+        //Set up presenter 创建presenter.与自身绑定
         presenter = new MainPresenter();
         presenter.attachView(this);
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         //Set up RecyclerView
         reposRecycleView = (RecyclerView) findViewById(R.id.repos_recycler_view);
         setupRecyclerView(reposRecycleView);
-        // Set up search button
+        // Set up search button 搜索按键的点击事件.获取输入栏的内容.通过presenter获取相应的代码库
         searchButton = (ImageButton) findViewById(R.id.button_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         return this;
     }
 
+    /**
+     * 获取到搜索的代码库数据后,在recycleView上显示
+     * @param repositories 代码库集合
+     */
     @Override
     public void showRepositories(List<Repository> repositories) {
         RepositoryAdapter adapter = (RepositoryAdapter) reposRecycleView.getAdapter();
@@ -99,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         reposRecycleView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     *没有获取到正确的搜索结果时,隐藏进度条.显示消息
+     * @param stringId String的资源文件id
+     */
     @Override
     public void showMessage(int stringId) {
         progressBar.setVisibility(View.INVISIBLE);
@@ -107,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         infoTextView.setText(getString(stringId));
     }
 
+    /**
+     * 显示进度条,隐藏信息和仓库信息
+     */
     @Override
     public void showProgressIndicator() {
         progressBar.setVisibility(View.VISIBLE);
@@ -114,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         reposRecycleView.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * 设置recyclerView.为其设置adapter.
+     * 并设置条点的点击事件.跳转到相应页面
+     * @param recyclerView 欲设置的recyclerView
+     */
     private void setupRecyclerView(RecyclerView recyclerView) {
         RepositoryAdapter adapter = new RepositoryAdapter();
         adapter.setCallback(new RepositoryAdapter.Callback() {
@@ -126,11 +142,17 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * 隐藏软键盘
+     */
     private void hideSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editTextUsername.getWindowToken(), 0);
     }
 
+    /**
+     * 输入栏监听.根据输入栏是否为空来隐藏或显示搜索图标
+     */
     private TextWatcher mHideShowButtonTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {

@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * GitHup的代码库模型.一个JavaBean
+ * 包含id,名字,描述,主页,所有者,fork数量.等数据
+ */
 public class Repository implements Parcelable {
     public long id;
     public String name;
@@ -21,14 +25,26 @@ public class Repository implements Parcelable {
     public Repository() {
     }
 
+    /**
+     * 主页是否存在
+     * @return 主页是否存在
+     */
     public boolean hasHomepage() {
         return homepage != null && !homepage.isEmpty();
     }
 
+    /**
+     * Language是否存在
+     * @return Language是否存在
+     */
     public boolean hasLanguage() {
         return language != null && !language.isEmpty();
     }
 
+    /**
+     * 是否是Fork的
+     * @return 是否是Fork的
+     */
     public boolean isFork() {
         return fork;
     }
